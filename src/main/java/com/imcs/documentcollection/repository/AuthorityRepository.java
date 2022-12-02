@@ -1,3 +1,4 @@
+/*
 package com.imcs.documentcollection.repository;
 
 import com.imcs.documentcollection.model.Authority;
@@ -10,3 +11,4 @@ import java.util.Optional;
 public interface AuthorityRepository extends JpaRepository<Authority, String> {
     Optional<Authority> findByUsernameIs(String username);
 }
+*/

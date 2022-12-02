@@ -14,54 +14,34 @@ import java.util.Objects;
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
 
-    private String username;
-
     private String email;
 
     private String name;
-
-    private String manager;
-
-    private String shortHandName;
 
     @JsonIgnore
     private String password;
 
     private boolean enabled;
 
-    private Collection<? extends GrantedAuthority> authorities;
-
-    public UserDetailsImpl(String username, String email, String name ,String manager, String password, boolean enabled, String shortHandName,
-                           Collection<? extends GrantedAuthority> authorities) {
-        this.username = username;
+    public UserDetailsImpl(String email, String name ,String password, boolean enabled) {
         this.email = email;
         this.password = password;
         this.enabled = enabled;
-        this.shortHandName = shortHandName;
-        this.authorities = authorities;
         this.name=name;
-        this.manager=manager;
     }
 
     public static UserDetailsImpl build(UserProfile user) {
 
-        String authority = user.getAuthority();
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>() {{add(new SimpleGrantedAuthority(authority));}};
-
         StringBuilder shortHandName = new StringBuilder();
-        String[] nameArray = user.getFullName().split(" ");
+        String[] nameArray = user.getFirstName().split(" ");
         for(String s: nameArray){
             shortHandName.append(s.charAt(0));
         }
         return new UserDetailsImpl(
-                user.getUsername(),
                 user.getEmail(),
-                user.getFirstName()+ " " +user.getLastName(),
-                user.getManager(),
+                user.getFirstName()+ " " +user.getMiddleName()+" " +user.getLastName(),
                 user.getPassword(),
-                user.isEnabled(),
-                shortHandName.toString(),
-                authorities);
+                user.isEnabled());
     }
 
     public String getEmail() {
@@ -70,7 +50,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return new ArrayList();
     }
 
     @Override
@@ -80,7 +60,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
@@ -103,28 +83,12 @@ public class UserDetailsImpl implements UserDetails {
         return this.enabled;
     }
 
-    public String getShortHandName() {
-        return shortHandName;
-    }
-
-    public void setShortHandName(String shortHandName) {
-        this.shortHandName = shortHandName;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String shortHandName) {
+    public void setName(String name) {
         this.name = name;
-    }
-
-    public String getManager() {
-        return manager;
-    }
-
-    public void setManager(String manager) {
-        this.manager = manager;
     }
 
     @Override
@@ -134,6 +98,6 @@ public class UserDetailsImpl implements UserDetails {
         if (o == null || getClass() != o.getClass())
             return false;
         UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(username, user.username);
+        return Objects.equals(email, user.email);
     }
 }

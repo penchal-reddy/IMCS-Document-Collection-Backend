@@ -11,21 +11,17 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserRequest {
-    private String username;
     private String password;
     private String email;
     @JsonProperty("first_name")
     private String firstName;
     @JsonProperty("last_name")
     private String lastName;
-    @JsonProperty("full_name")
-    private String fullName;
+    @JsonProperty("middle_name")
+    private String middleName;
     private boolean enabled;
-    private String manager;
-    private String authority;
-    private String location;
-    @JsonProperty("office_location")
-    private String officeLocation;
-    private boolean newUser;
-
+    @JsonProperty("phone_number")
+    private String phoneNumber;
+    @JsonProperty("assassin_number")
+    private String assassinNumber;
 }

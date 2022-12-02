@@ -8,9 +8,7 @@ import lombok.Setter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,43 +17,34 @@ import java.util.Set;
 @Setter
 public class UserProfile {
 
-	public UserProfile(String username, String password, String email, String fullName, boolean enabled, String manager,String firstName,String lastName, String location,String officeLocation) {
-		this.username = username;
+	public UserProfile(String password, String email, boolean enabled, String firstName, String middleName, String lastName, String phoneNumber,String assassinNumber) {
 		this.password = new BCryptPasswordEncoder().encode(password);
 		this.email = email;
-		this.fullName = fullName;
+		this.middleName = middleName;
 		this.enabled = enabled;
-		this.manager = manager;
 		this.firstName=firstName;
 		this.lastName=lastName;
-		this.location = location;
-		this.officeLocation=officeLocation;
+		this.phoneNumber = phoneNumber;
+		this.assassinNumber=assassinNumber;
 	}
 
-	public UserProfile(String username, String email, String fullName, boolean enabled, String manager,String firstName,String lastName, String location,String officeLocation) {
-		this.username = username;
+	public UserProfile(String email, boolean enabled, String firstName, String middleName, String lastName,String phoneNumber, String assassinNumber) {
 		this.email = email;
-		this.fullName = fullName;
+		this.middleName = middleName;
 		this.enabled = enabled;
-		this.manager = manager;
 		this.firstName=firstName;
 		this.lastName=lastName;
-		this.location = location;
-		this.officeLocation=officeLocation;
+		this.phoneNumber = phoneNumber;
 	}
 
 	@Id
-	@Column(name = "username")
-	@JsonProperty("username")
-	private String username;
+	@Column(name = "email")
+	@JsonProperty("email")
+	private String email;
 
 	@Column(name = "password")
 	@JsonIgnore
 	private String password;
-
-	@Column(name = "email")
-	@JsonProperty("email")
-	private String email;
 
 	@Column(name = "first_name")
 	@JsonProperty("first_name")
@@ -65,30 +54,21 @@ public class UserProfile {
 	@JsonProperty("last_name")
 	private String lastName;
 
-	@Column(name = "full_name")
-	@JsonProperty("full_name")
-	private String fullName;
+	@Column(name = "middle_name")
+	@JsonProperty("middle_name")
+	private String middleName;
 
 	@Column(name = "enabled")
 	@JsonProperty("enabled")
 	private boolean enabled;
 
-	@OneToMany(mappedBy = "username", cascade = CascadeType.ALL)
-//	@JoinColumn(name = "username", referencedColumnName = "username")
-	private Set<Authority> authorities = new HashSet<>();
-	
-	@Column(name = "manager")
-	@JsonProperty("manager")
-	private String manager;
+	@Column(name = "phone_number")
+	@JsonProperty("phone_number")
+	private String phoneNumber;
 
-	@Column(name="location")
-	@JsonProperty("location")
-	private String location;
-
-	@Column(name="office_location")
-	@JsonProperty("office_location")
-	private String officeLocation;
-
+	@Column(name="assassin_number")
+	@JsonProperty("assassin_number")
+	private String assassinNumber;
 	public String getPassword() {
 		return password;
 	}
@@ -98,53 +78,26 @@ public class UserProfile {
 
 	}
 
-	public String getAuthority(){
-		return authorities.stream().findFirst().get().getAuthority();
-	}
-
-	public void setAuthority(Authority authority){
-		this.authorities.add(authority);
-	}
-
-
 	public boolean matchPassword(String testPwd) {
 		return new BCryptPasswordEncoder().matches(testPwd, password);
 	}
-
-//	@Override
-//	public boolean equals(Object o) {
-//		if (this == o) return true;
-//		if (o == null || getClass() != o.getClass()) return false;
-//
-//		UserProfile that = (UserProfile) o;
-//
-//		if (enabled != that.enabled) return false;
-//		if (!username.equals(that.username)) return false;
-//		if (!email.equals(that.email)) return false;
-//		if (!fullName.equals(that.fullName)) return false;
-//		if (!firstName.equals(that.firstName)) return false;
-//		if (!lastName.equals(that.lastName)) return false;
-//		return Objects.equals(manager, that.manager);
-//	}
-
 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		UserProfile that = (UserProfile) o;
-		return enabled == that.enabled && username.equals(that.username) && Objects.equals(email, that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(fullName, that.fullName) && Objects.equals(manager, that.manager) && Objects.equals(location, that.location) && Objects.equals(officeLocation, that.officeLocation);
+		return enabled == that.enabled && email.equals(that.email) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(middleName, that.middleName) && Objects.equals(phoneNumber, that.phoneNumber);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = username.hashCode();
-		result = 31 * result + email.hashCode();
-		result = 31 * result + fullName.hashCode();
+		int result = email.hashCode();
+		result = 31 * result + phoneNumber.hashCode();
+		result = 31 * result + middleName.hashCode();
 		result = 31 * result + firstName.hashCode();
 		result = 31 * result + lastName.hashCode();
 		result = 31 * result + (enabled ? 1 : 0);
-		result = 31 * result + (manager != null ? manager.hashCode() : 0);
 		return result;
 	}
 }

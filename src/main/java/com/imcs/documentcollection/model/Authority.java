@@ -1,3 +1,4 @@
+/*
 package com.imcs.documentcollection.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,10 +22,11 @@ public class Authority {
     @Id
     @Column(name = "username")
     @JsonProperty("username")
-    private String username;
+    private String email;
 
     @Column(name = "authority")
     @JsonProperty("authority")
     private String authority;
 
 }
+*/
