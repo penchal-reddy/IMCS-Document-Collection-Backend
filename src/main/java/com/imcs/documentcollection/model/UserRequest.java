@@ -21,6 +21,4 @@ public class UserRequest {
     private boolean enabled;
     @JsonProperty("phone_number")
     private String phoneNumber;
-    @JsonProperty("assassin_number")
-    private String assassinNumber;
 }

@@ -45,10 +45,6 @@ public class UserProfile {
 	@JsonProperty("phone_number")
 	private String phoneNumber;
 
-	@Column(name="assassin_number")
-	@JsonProperty("assassin_number")
-	private String assassinNumber;
-
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
