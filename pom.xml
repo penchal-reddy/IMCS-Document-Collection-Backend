@@ -111,14 +111,14 @@
             <version>20190722</version>
         </dependency>
         <dependency>
-            <groupId>com.twilio.sdk</groupId>
-            <artifactId>twilio</artifactId>
-            <version>8.5.1</version>
-        </dependency>
-        <dependency>
             <groupId>com.sendgrid</groupId>
             <artifactId>sendgrid-java</artifactId>
             <version>4.7.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
         <dependency>
