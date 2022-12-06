@@ -1,5 +1,6 @@
 package com.imcs.documentcollection.service.impl;
 
+import com.google.gson.JsonObject;
 import com.imcs.documentcollection.dto.EmployeeRequest;
 import com.imcs.documentcollection.model.Employee;
 import com.imcs.documentcollection.repository.EmployeesRepository;
@@ -15,9 +16,7 @@ import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeesService {
@@ -49,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeesService {
         newEmployee.setExpiryDate(new Date(getCSTDate().getTime() + (uidExpiryhours * hoursInMillis)));
         employeeRepository.save(newEmployee);
         String emailSubject = "SSN Number Request Notification";
-        String link = "http://"+baseUrl+"/"+newEmployee.getUid();
+        String link = baseUrl+"/"+newEmployee.getUid();
         String emailContent = "Dear " + employee.getFirstName() + " " + employee.getLastName() + ",\n\n" + "Your account has been created for IMCS Document Collection portal. Please use below link for SSN Number enter details.\n"+link;
         emailService.sendEmail(newEmployee.getEmail(), "", "", emailSubject, emailContent, "text/plain");
         return "User Registration Success";
@@ -86,13 +85,26 @@ public class EmployeeServiceImpl implements EmployeesService {
 
     @Override
     public Object uidVerification(long uid) throws Exception {
+        Map<String,Object> response=new HashMap<>();
+        response.put("status",false);
+        response.put("message","Invalid UID");
         if (uid!= 0) {
             Employee empFromDb=employeeRepository.findByUid(uid).get();
             if(empFromDb!=null){
-                return !getCSTDate().after(empFromDb.getExpiryDate());
+                if(getCSTDate().after(empFromDb.getExpiryDate())){
+                    response.put("status",false);
+                    response.put("message","UID Expired");
+                }else{
+                    response.put("status",true);
+                    response.put("message","valid UID");
+                    response.put("first_name",empFromDb.getFirstName());
+                    response.put("middle_name",empFromDb.getMiddleName());
+                    response.put("last_name",empFromDb.getLastName());
+                    response.put("email",empFromDb.getEmail());
+                }
             }
         }
-        return false;
+        return response;
     }
 
     public Date getCSTDate() throws Exception{
