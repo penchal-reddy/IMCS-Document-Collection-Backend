@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -16,26 +15,6 @@ import java.util.Objects;
 @Getter
 @Setter
 public class UserProfile {
-
-	public UserProfile(String password, String email, boolean enabled, String firstName, String middleName, String lastName, String phoneNumber,String assassinNumber) {
-		this.password = new BCryptPasswordEncoder().encode(password);
-		this.email = email;
-		this.middleName = middleName;
-		this.enabled = enabled;
-		this.firstName=firstName;
-		this.lastName=lastName;
-		this.phoneNumber = phoneNumber;
-		this.assassinNumber=assassinNumber;
-	}
-
-	public UserProfile(String email, boolean enabled, String firstName, String middleName, String lastName,String phoneNumber, String assassinNumber) {
-		this.email = email;
-		this.middleName = middleName;
-		this.enabled = enabled;
-		this.firstName=firstName;
-		this.lastName=lastName;
-		this.phoneNumber = phoneNumber;
-	}
 
 	@Id
 	@Column(name = "email")
@@ -69,18 +48,6 @@ public class UserProfile {
 	@Column(name="assassin_number")
 	@JsonProperty("assassin_number")
 	private String assassinNumber;
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String pwd) {
-		password = new BCryptPasswordEncoder().encode(pwd);
-
-	}
-
-	public boolean matchPassword(String testPwd) {
-		return new BCryptPasswordEncoder().matches(testPwd, password);
-	}
 
 	@Override
 	public boolean equals(Object o) {

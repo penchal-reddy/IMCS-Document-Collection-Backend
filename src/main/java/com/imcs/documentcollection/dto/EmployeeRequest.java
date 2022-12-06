@@ -1,4 +1,4 @@
-package com.imcs.documentcollection.model;
+package com.imcs.documentcollection.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserRequest {
+public class EmployeeRequest {
+
+    private int id;
     private String email;
     @JsonProperty("first_name")
     private String firstName;
@@ -18,9 +20,8 @@ public class UserRequest {
     private String lastName;
     @JsonProperty("middle_name")
     private String middleName;
-    private boolean enabled;
     @JsonProperty("phone_number")
     private String phoneNumber;
-    @JsonProperty("assassin_number")
-    private String assassinNumber;
+    @JsonProperty("ssn_number")
+    private int ssnNumber;
 }

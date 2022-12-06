@@ -58,8 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         AUTH_WHITELIST = new String[]{
                 "/api/login",
                 "/api/users/logoUrl",
-                "/api/users/client",
-                "/api/tablestructure/updatemetadata/**",
+                "/api/employee/uidVerification/**",
+                "/api/employee/ssnRequest/**",
                 "/api/users/resetPassword",
                 "/resources/img/**",
                 // -- Swagger UI v2
